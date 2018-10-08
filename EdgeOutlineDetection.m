@@ -13,7 +13,7 @@ imageFiles = dir('Images/8*');
 jerry = 7360*4912;
 
 plotGrayscale = 0;
-plotBinarized = 1;
+plotBinarized = 0;
 
 number_of_pixels = zeros(length(imageFiles),1);
 for i=1:length(imageFiles)
@@ -40,6 +40,7 @@ for i=1:length(imageFiles)
             sz = 200;
             scatter(mean(b(:,2)),mean(b(:,1)),sz,'r','+');
             plot(b(:,2),b(:,1),'g','LineWidth',3);
+            saveas(gcf,['OutlinedImageOutputs/','outlined_',imageFiles(i).name])
         end
     end
     
@@ -59,6 +60,7 @@ for i=1:length(imageFiles)
         imshow(image_cropped,'InitialMagnification','fit');
         title({['Image Number: ' , imageFiles(i).name] , ...
             ['Number of Pixels: ',num2str(number_of_pixels(i))]})
+        saveas(gcf,['BinarizedImageOutputs/','binarized_',imageFiles(i).name]);
     end
    
 end
