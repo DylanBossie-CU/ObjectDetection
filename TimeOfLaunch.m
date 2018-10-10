@@ -5,7 +5,10 @@
 % Purpose: Receives a three-dimensional position and velocity vector of 
 % an object vectors of three-dimensional position and velocity uncertainty 
 % (1sigma).  It will return the time and temporal uncertainty of when
-% the object passed through the xy-plane.
+% the object passed through the xy-plane.  Note that this code assumes that
+% the object is truly moving only in the z direction, so components of R,
+% dR, V, and dV in the xy-plane can be ignored when calculating launch
+% time.
 %
 % Inputs (consistent units):
 %   R   - 3D position vector
@@ -20,12 +23,12 @@
 function [ToL,dToL] = TimeOfLaunch(R,dR,V,dV)
 %% Extraction of relevant data
 z = R(3);
-dz = dR(3);
+dz = abs(dR(3));
 zdot = V(3);
-dzdot = dV(3);
+dzdot = abs(dV(3));
 
 %% Calculation of ToL
-ToL = z/zdot;
+ToL = abs(z/zdot);
 
 %% Calculation of dToL
 dToL = ToL*(dz/abs(z) + dzdot/abs(zdot));
