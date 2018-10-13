@@ -1,10 +1,7 @@
-function FindCentroid(imageFiles,plotGrayscale,~,plotBinarized)
-%Number of expected objects (sad I know but it's for proving tracking not
-%realistic tracking o.O
-n=2;
+function FindCentroid(imageFiles,plotGrayscale,~,plotBinarized,imageDirectory)
 
 for i=1:length(imageFiles)
-    I = imread(strcat('Images/',imageFiles(i).name));
+    I = imread(strcat(imageDirectory,imageFiles(i).name));
     I_gray = rgb2gray(I);
 
     binaryTolerance = 0.1;
@@ -16,16 +13,17 @@ for i=1:length(imageFiles)
     [~,si] = sort(s,'descend');
     I_boundaries = I_boundaries(si,:);
     
+    objects = detectObjects(I_boundaries,s,si);
+    
     if plotGrayscale == 1
         figure
         imshow(I_gray,'InitialMagnification',800);
         hold on
-        title(['Image ' , num2str(i)]);
         sz = 600;
     end
     
-    for j=1:n
-        b = I_boundaries{j};
+    for j=1:length(objects)
+        b = objects{j};
         %%%% Plotting grayscale image overlaid with cube outline
         %%%% and geometric centroid overlaid
         if plotGrayscale == 1
@@ -37,15 +35,28 @@ for i=1:length(imageFiles)
         end
     end
     
-    %if plotGrayscale == 1
-    %    saveas(gcf,['OutlinedImageOutputs/','outlined_multitracking'...
-    %        ,imageFiles(i).name]);
-    %end
+    object_pixels = FindCubeSatPixels(objects,I_binarized);
     
-    %number_of_pixels(i) = FindCubeSatPixels(b,imageFiles(i).name,I_binarized,...
-    %    plotBinarized);
-    FindCubeSatPixels(b,imageFiles(i).name,I_binarized,...
-        plotBinarized);
+    if plotGrayscale == 1
+        for j = 1:length(object_pixels)
+            xLocation = j;
+            yLocation = j;
+            str = strcat(num2str(j),);
+            text(xLocation,yLocation,str,'Color','red',...
+                    'FontSize',50);
+        end
+        title(['Image ' , num2str(i)]);
+        saveas(gcf,['OutlinedImageOutputs/','outlined_'...
+            ,imageFiles(i).name]);
+    end
+    
+    if plotBinarized == 1
+        figure
+        imshow(image_cropped,'InitialMagnification','fit');
+        title({['Image Number: ' , imageFiles(i).name] , ...
+            ['Number of Pixels: ',num2str(number_of_pixels)]})
+        saveas(gcf,['BinarizedImageOutputs/','binarized_',imageName]);
+    end
     
 end
 

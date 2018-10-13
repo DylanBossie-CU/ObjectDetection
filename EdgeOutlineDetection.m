@@ -14,9 +14,11 @@ plotGrayscale = 1;
 plotBinarized = 0;
 
 
-%%% Search Images folder for test images (images beginning with 8)
-imageFiles = dir('Images/multi*');
+%%% Search desired image folder for relevant images
+imageDirectory = 'Images/';
+images = strcat(imageDirectory,'multi*');
+imageFiles = dir(images);
 
 %Preallocate array to store number of pixels for the cubesats in each image
 number_of_pixels = zeros(length(imageFiles),1);
-FindCentroid(imageFiles,plotGrayscale,number_of_pixels,plotBinarized);
+FindCentroid(imageFiles,plotGrayscale,number_of_pixels,plotBinarized,imageDirectory);
