@@ -4,7 +4,7 @@ for i=1:length(imageFiles)
     I = imread(strcat(imageDirectory,imageFiles(i).name));
     I_gray = rgb2gray(I);
 
-    binaryTolerance = 0.1;
+    binaryTolerance = 0.25;
     I_binarized = imbinarize(I_gray,binaryTolerance);
     [I_boundaries,~,~,~] = bwboundaries(I_binarized);
     
@@ -30,7 +30,7 @@ for i=1:length(imageFiles)
             scatter(mean(b(:,2)),mean(b(:,1)),sz,'r','+','LineWidth',5);
             str = num2str(j);
             text(mean(b(:,2)),mean(b(:,1))+200,str,'Color','red',...
-                'FontSize',50);
+                'FontSize',60);
             plot(b(:,2),b(:,1),'g','LineWidth',3);
         end
     end
@@ -39,11 +39,11 @@ for i=1:length(imageFiles)
     
     if plotGrayscale == 1
         for j = 1:length(object_pixels)
-            xLocation = j;
-            yLocation = j;
-            str = strcat(num2str(j),);
+            xLocation = 1*j;
+            yLocation = 60*j;
+            str = strcat(num2str(j),':  ', num2str(object_pixels(j)),'px');
             text(xLocation,yLocation,str,'Color','red',...
-                    'FontSize',50);
+                    'FontSize',30);
         end
         title(['Image ' , num2str(i)]);
         saveas(gcf,['OutlinedImageOutputs/','outlined_'...
