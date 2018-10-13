@@ -35,7 +35,7 @@ for i=1:length(imageFiles)
         end
     end
     
-    object_pixels = FindCubeSatPixels(objects,I_binarized);
+    [object_pixels,image_cropped] = FindCubeSatPixels(objects,I_binarized);
     
     if plotGrayscale == 1
         for j = 1:length(object_pixels)
@@ -54,8 +54,8 @@ for i=1:length(imageFiles)
         figure
         imshow(image_cropped,'InitialMagnification','fit');
         title({['Image Number: ' , imageFiles(i).name] , ...
-            ['Number of Pixels: ',num2str(number_of_pixels)]})
-        saveas(gcf,['BinarizedImageOutputs/','binarized_',imageName]);
+            ['Number of Pixels: ',num2str(object_pixels)]})
+        saveas(gcf,['BinarizedImageOutputs/','binarized_',imageFiles(i).name]);
     end
     
 end

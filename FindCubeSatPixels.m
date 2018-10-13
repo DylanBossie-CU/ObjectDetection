@@ -1,5 +1,5 @@
 %function number_of_pixels = FindCubeSatPixels(b,imageName,I_binarized,...
-function object_pixels = FindCubeSatPixels(objects,I_binarized)
+function [object_pixels,image_cropped] = FindCubeSatPixels(objects,I_binarized)
     object_pixels = zeros(length(objects),1);
     for i = 1:length(objects)
         object = objects(i);

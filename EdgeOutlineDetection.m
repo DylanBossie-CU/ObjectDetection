@@ -11,12 +11,12 @@ clear
 
 %%% Options to plot grayscale centroid and binarized images
 plotGrayscale = 1;
-plotBinarized = 0;
+plotBinarized = 1;
 
 
 %%% Search desired image folder for relevant images
 imageDirectory = 'Images/';
-images = strcat(imageDirectory,'8*');
+images = strcat(imageDirectory,'download*');
 imageFiles = dir(images);
 
 %Preallocate array to store number of pixels for the cubesats in each image
