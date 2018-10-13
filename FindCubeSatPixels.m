@@ -6,17 +6,17 @@ function [] = FindCubeSatPixels(b,imageName,I_binarized,...
     boundaryXStart = min(b(:,2));
     boundaryXEnd = max (b(:,2));
     boundaryYStart = min(b(:,1));
-    boundaryYEnd = max(b(:,2));
+    boundaryYEnd = max(b(:,1));
     
-    %image_cropped = imcrop(I_binarized,[boundaryXStart,boundaryYStart,...
-        %boundaryXEnd-boundaryXStart,boundaryYEnd-boundaryYStart]);
-    %number_of_pixels = length(find(image_cropped==1));
+    image_cropped = imcrop(I_binarized,[boundaryXStart,boundaryYStart,...
+        boundaryXEnd-boundaryXStart,boundaryYEnd-boundaryYStart]);
+    number_of_pixels = length(find(image_cropped==1));
     
     if plotBinarized == 1
         figure
-        imshow(I_binarized,'InitialMagnification','fit');
-        title({['Image Number: ' , imageName] , ...
-            ['Number of Pixels: ']});%,num2str(number_of_pixels)]})
-        saveas(gcf,['BinarizedImageOutputs/','binarized_',imageName]);
+        imshow(image_cropped,'InitialMagnification','fit');
+        title({['Image Number: ' , imageName(2:end)] , ...
+            ['Number of Pixels: ',num2str(number_of_pixels)]})
+        saveas(gcf,['richardoutputs/','binarized_',imageName]);
     end
 end

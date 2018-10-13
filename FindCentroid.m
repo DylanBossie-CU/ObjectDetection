@@ -21,7 +21,7 @@ for i=1:length(imageFiles)
         imshow(I_gray,'InitialMagnification',800);
         hold on
         title(['Image ' , num2str(i)]);
-        sz = 200;
+        sz = 600;
     end
     
     for j=1:n
@@ -29,18 +29,18 @@ for i=1:length(imageFiles)
         %%%% Plotting grayscale image overlaid with cube outline
         %%%% and geometric centroid overlaid
         if plotGrayscale == 1
-            scatter(mean(b(:,2)),mean(b(:,1)),sz,'r','+');
+            scatter(mean(b(:,2)),mean(b(:,1)),sz,'r','+','LineWidth',5);
             str = num2str(j);
             text(mean(b(:,2)),mean(b(:,1))+200,str,'Color','red',...
-                'FontSize',15);
+                'FontSize',50);
             plot(b(:,2),b(:,1),'g','LineWidth',3);
         end
     end
     
-    if plotGrayscale == 1
-        saveas(gcf,['OutlinedImageOutputs/','outlined_multitracking'...
-            ,imageFiles(i).name]);
-    end
+    %if plotGrayscale == 1
+    %    saveas(gcf,['OutlinedImageOutputs/','outlined_multitracking'...
+    %        ,imageFiles(i).name]);
+    %end
     
     %number_of_pixels(i) = FindCubeSatPixels(b,imageFiles(i).name,I_binarized,...
     %    plotBinarized);
