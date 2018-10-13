@@ -1,35 +1,62 @@
-function FindCentroid(imageFiles,plotGrayscale,number_of_pixels,plotBinarized)
+function FindCentroid(imageFiles,plotGrayscale,~,plotBinarized,imageDirectory)
 
 for i=1:length(imageFiles)
-    I = imread(strcat('Images/',imageFiles(i).name));
+    I = imread(strcat(imageDirectory,imageFiles(i).name));
     I_gray = rgb2gray(I);
 
-    binaryTolerance = 0.2;
+    binaryTolerance = 0.25;
     I_binarized = imbinarize(I_gray,binaryTolerance);
     [I_boundaries,~,~,~] = bwboundaries(I_binarized);
     
-    for j=1:length(I_boundaries)
-        %%%Ignore objects with small boundaries (background noise)
-        if length(I_boundaries{j}(:,1)) < length(I_gray(:,1))*0.2
-            continue
-        end
-        b = I_boundaries{j};
+    %%%%% Find the largest boundaries (the cubesats)
+    [s,~] = cellfun(@size,I_boundaries);
+    [~,si] = sort(s,'descend');
+    I_boundaries = I_boundaries(si,:);
+    
+    objects = detectObjects(I_boundaries,s,si);
+    
+    if plotGrayscale == 1
+        figure
+        imshow(I_gray,'InitialMagnification',800);
+        hold on
+        sz = 600;
+    end
+    
+    for j=1:length(objects)
+        b = objects{j};
         %%%% Plotting grayscale image overlaid with cube outline
         %%%% and geometric centroid overlaid
         if plotGrayscale == 1
-            figure
-            imshow(I_gray,'InitialMagnification',800);
-            title(['Image Number: ' , imageFiles(i).name])
-            hold on
-            sz = 200;
-            scatter(mean(b(:,2)),mean(b(:,1)),sz,'r','+');
+            scatter(mean(b(:,2)),mean(b(:,1)),sz,'r','+','LineWidth',5);
+            %str = num2str(j);
+            %text(mean(b(:,2)),mean(b(:,1))+200,str,'Color','red',...
+            %    'FontSize',60);
             plot(b(:,2),b(:,1),'g','LineWidth',3);
-            saveas(gcf,['OutlinedImageOutputs/','outlined_',imageFiles(i).name])
         end
     end
     
-    number_of_pixels(i) = FindCubeSatPixels(b,imageFiles(i).name,I_binarized,...
-        plotBinarized);
+    object_pixels = FindCubeSatPixels(objects,I_binarized);
+    
+    if plotGrayscale == 1
+        for j = 1:length(object_pixels)
+            xLocation = 1*j;
+            yLocation = 60*j;
+            str = strcat(num2str(j),':  ', num2str(object_pixels(j)),'px');
+            text(xLocation,yLocation,str,'Color','red',...
+                    'FontSize',30);
+        end
+        title(['Image ' , num2str(i)]);
+        saveas(gcf,['OutlinedImageOutputs/','outlined_'...
+            ,imageFiles(i).name]);
+    end
+    
+    if plotBinarized == 1
+        figure
+        imshow(image_cropped,'InitialMagnification','fit');
+        title({['Image Number: ' , imageFiles(i).name] , ...
+            ['Number of Pixels: ',num2str(number_of_pixels)]})
+        saveas(gcf,['BinarizedImageOutputs/','binarized_',imageName]);
+    end
     
 end
 
