@@ -16,7 +16,7 @@ plotBinarized = 1;
 
 %%% Search desired image folder for relevant images
 imageDirectory = 'Images/';
-images = strcat(imageDirectory,'download*');
+images = strcat(imageDirectory,'tumblyboi*');
 imageFiles = dir(images);
 
 %Preallocate array to store number of pixels for the cubesats in each image
