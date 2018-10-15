@@ -7,16 +7,18 @@ close all
 clear
 
 %Resolution of Jerry's camera
-jerry = 7360*4912;
+%jerry = 7360*4912;
 
 %%% Options to plot grayscale centroid and binarized images
 plotGrayscale = 1;
 plotBinarized = 1;
 
 
-%%% Search Images folder for test images (images beginning with 8)
-imageFiles = dir('Images/8*');
+%%% Search desired image folder for relevant images
+imageDirectory = 'Images/';
+images = strcat(imageDirectory,'tumblyboi*');
+imageFiles = dir(images);
 
 %Preallocate array to store number of pixels for the cubesats in each image
 number_of_pixels = zeros(length(imageFiles),1);
-FindCentroid(imageFiles,plotGrayscale,number_of_pixels,plotBinarized);
+FindCentroid(imageFiles,plotGrayscale,number_of_pixels,plotBinarized,imageDirectory);
