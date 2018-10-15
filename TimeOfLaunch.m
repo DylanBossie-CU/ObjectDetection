@@ -22,10 +22,10 @@
 %
 function [ToL,dToL] = TimeOfLaunch(R,dR,V,dV)
 %% Extraction of relevant data
-z = R(3);
-dz = abs(dR(3));
-zdot = V(3);
-dzdot = abs(dV(3));
+z = R;
+dz = abs(dR);
+zdot = V;
+dzdot = abs(dV);
 
 %% Calculation of ToL
 ToL = abs(z/zdot);
