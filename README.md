@@ -8,5 +8,4 @@ Determine the launch time of the CubeSats within error bounds
 Confirm the initial velocities of the CubeSats are within range
 Perform multi-object tracking for the case of multiple CubeSats within FOV
 
-
-Most recent images are currently in the MultiObjectTracking branch, not sure if I'll merge them for a while
+Default image directory to be processed is defined in imageDirectory variable in EdgeOutlineDetection.m, program should be run from this script.
